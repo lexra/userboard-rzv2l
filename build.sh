@@ -151,7 +151,7 @@ cd ${WORK}/rzv2l_drpai-sample-application
 
 cd ${WORK}/rzv2l_drpai-sample-application/app_tinyyolov2_cam/src
 #patch -R -p1 -i rzv2l_app_tinyyolov2_cam_usb2mipi.patch || true
-patch -p1 -l -f --fuzz 3 -i rzv2l_app_tinyyolov2_cam_usb2mipi.patch
+[ 0 -eq $(cat camera.cpp | grep SRGGB10_1X10 | wc -l) ] && patch -p1 -l -f --fuzz 3 -i rzv2l_app_tinyyolov2_cam_usb2mipi.patch
 
 cd ${WORK}
 sed 's/master/main/' -i meta-openamp/recipes-openamp/libmetal/libmetal.inc
