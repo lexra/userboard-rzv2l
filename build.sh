@@ -146,10 +146,11 @@ cd ${WORK}
 [ ! -d meta-isp ] && (tar zxvf rzv2l_meta-isp_ver1.00.tar.gz)
 
 cd ${WORK}/rzv2l_drpai-sample-application
-[ ! -d app_isp_monitoring -o ! -d app_tinyyolov2_cam ] && (tar zxvf ../rzv2l_isp-sample-application_ver1.00.tar.gz)
+[ ! -d app_isp_monitoring -o ! -d app_tinyyolov2_cam -o 0 -eq $(cat app_tinyyolov2_cam/src/camera.cpp | grep SRGGB10_1X10 | wc -l) ] && \
+	(tar zxvf ../rzv2l_isp-sample-application_ver1.00.tar.gz)
 
 cd ${WORK}/rzv2l_drpai-sample-application/app_tinyyolov2_cam/src
-patch -R -p1 -i rzv2l_app_tinyyolov2_cam_usb2mipi.patch || true
+#patch -R -p1 -i rzv2l_app_tinyyolov2_cam_usb2mipi.patch || true
 patch -p1 -l -f --fuzz 3 -i rzv2l_app_tinyyolov2_cam_usb2mipi.patch
 
 cd ${WORK}
