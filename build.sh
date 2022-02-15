@@ -115,7 +115,9 @@ cd ${WORK}/meta-qt5 && (git checkout -b tmp ${META_QT5_COMMIT} || true)
 ### https://www.renesas.com/us/en/products/microcontrollers-microprocessors/rz-arm-based-high-end-32-64-bit-mpus/rzv2l-linux-package-419-cip-v100
 cd ${WORK}
 [ ! -e meta-rzv/recipes-kernel/linux/linux-renesas/patches/rzv2l/0006-ov5645-Add-VGA-720x480-and-720p-resloutions.patch ] && \
-	(unzip -o proprietary/r01an6221ej0100-rzv2l-linux.zip && tar zxvf r01an6221ej0100-rzv2l-linux/rzv2l_bsp_v100.tar.gz)
+	(unzip -o proprietary/r01an6221ej0100-rzv2l-linux.zip && \
+		tar zxvf r01an6221ej0100-rzv2l-linux/rzv2l_bsp_v100.tar.gz && \
+			sed -i -e 's|35a832d08bddaf64b3dccbf364732ac7f8dfb647|c12017179a8ca11d38486f1ace08d52a489056d0|g' meta-rzv/recipes-bsp/u-boot/u-boot_2020.10.bb)
 
 ##########################################################
 #
