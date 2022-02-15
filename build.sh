@@ -87,16 +87,16 @@ TFTPBOOT=/var/lib/tftpboot
 ##########################################################
 #
 echo -e "${YELLOW}>> git clone ${NC}"
-(git clone git://git.yoctoproject.org/poky || true) &
-(git clone git://git.openembedded.org/meta-openembedded.git || true) &
-(git clone https://github.com/renesas-rz/meta-rzv.git || true) &
-(git clone https://git.yoctoproject.org/meta-gplv2 || true) &
+#(git clone git://git.yoctoproject.org/poky || true) &
+#(git clone git://git.openembedded.org/meta-openembedded.git || true) &
+#(git clone https://github.com/renesas-rz/meta-rzv.git || true) &
+#(git clone https://git.yoctoproject.org/meta-gplv2 || true) &
 (git clone https://github.com/meta-qt5/meta-qt5.git || true) &
 wait
 
 ##########################################################
 #
-META_RZG2_COMMIT=dunfell/rzv2l
+META_RZV2_COMMIT=rzv2l_bsp_v1.0
 META_QT5_COMMIT=c1b0c9f546289b1592d7a895640de103723a0305
 POKY_COMMIT=dunfell-23.0.5
 META_OE_COMMIT=cc6fc6b1641ab23089c1e3bba11e0c6394f0867c
@@ -105,11 +105,17 @@ META_GPLV2_COMMIT=60b251c25ba87e946a0ca4cdc8d17b1cb09292ac
 ##########################################################
 #
 echo -e "${YELLOW}>> git ckeckout ${NC}"
-cd ${WORK}/poky && (git checkout -b tmp ${POKY_COMMIT} && git cherry-pick 9e444 || true)
-cd ${WORK}/meta-openembedded && (git checkout -b tmp ${META_OE_COMMIT} || true)
-cd ${WORK}/meta-rzv && (git checkout ${META_RZG2_COMMIT} || true)
-cd ${WORK}/meta-gplv2 && (git checkout -b tmp ${META_GPLV2_COMMIT} || true)
+#cd ${WORK}/poky && (git checkout -b tmp ${POKY_COMMIT} && git cherry-pick 9e444 || true)
+#cd ${WORK}/meta-openembedded && (git checkout -b tmp ${META_OE_COMMIT} || true)
+#cd ${WORK}/meta-rzv && (git checkout ${META_RZV2_COMMIT} || true)
+#cd ${WORK}/meta-gplv2 && (git checkout -b tmp ${META_GPLV2_COMMIT} || true)
 cd ${WORK}/meta-qt5 && (git checkout -b tmp ${META_QT5_COMMIT} || true)
+
+##########################################################
+### https://www.renesas.com/us/en/products/microcontrollers-microprocessors/rz-arm-based-high-end-32-64-bit-mpus/rzv2l-linux-package-419-cip-v100
+cd ${WORK}
+[ ! -e meta-rzv/recipes-kernel/linux/linux-renesas/patches/rzv2l/0006-ov5645-Add-VGA-720x480-and-720p-resloutions.patch ] && \
+	(unzip -o proprietary/r01an6221ej0100-rzv2l-linux.zip && tar zxvf r01an6221ej0100-rzv2l-linux/rzv2l_bsp_v100.tar.gz)
 
 ##########################################################
 #
@@ -152,6 +158,9 @@ cd ${WORK}/rzv2l_drpai-sample-application
 cd ${WORK}/rzv2l_drpai-sample-application/app_tinyyolov2_cam/src
 #patch -R -p1 -i rzv2l_app_tinyyolov2_cam_usb2mipi.patch || true
 [ 0 -eq $(cat camera.cpp | grep SRGGB10_1X10 | wc -l) ] && patch -p1 -l -f --fuzz 3 -i rzv2l_app_tinyyolov2_cam_usb2mipi.patch
+
+#cd ${WORK}
+#/bin/cp -f extra/0003-enable-drpai-drv.patch meta-drpai/recipes-linux/linux/linux-renesas/0003-enable-drpai-drv.patch
 
 cd ${WORK}
 sed 's/master/main/' -i meta-openamp/recipes-openamp/libmetal/libmetal.inc
