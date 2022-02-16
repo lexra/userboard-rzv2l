@@ -205,7 +205,7 @@ if [ ! -d /opt/poky/${MACHINE} ]; then
 	cd ${WORK}/build
 	${WORK}/poky/bitbake/bin/bitbake ${CORE_IMAGE_SDK} -v -c populate_sdk
 	echo /opt/poky/${MACHINE} > yes.txt && echo y >> yes.txt
-	cat yes.txt | sudo ./tmp/deploy/sdk/poky-glibc-x86_64-core-image-qt-aarch64-${MACHINE}-toolchain-3.1.5.sh
+	cat yes.txt | sudo ./tmp/deploy/sdk/poky-glibc-x86_64-$(echo ${CORE_IMAGE_SDK} | sed 's/-sdk//g')-aarch64-${MACHINE}-toolchain-3.1.5.sh
 	rm -rf yes.txt
 	sudo chmod +x /opt/poky/${MACHINE}/site-* || true
 	sudo chmod +x /opt/poky/${MACHINE}/environment-* || true
